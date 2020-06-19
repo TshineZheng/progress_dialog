@@ -41,9 +41,9 @@ class MyApp extends StatelessWidget {
       backgroundColor: Colors.white,
       elevation: 10.0,
       insetAnimCurve: Curves.easeInOut,
-      progress: 0.0,
+      progress: 0,
       progressWidgetAlignment: Alignment.center,
-      maxProgress: 100.0,
+      maxProgress: 100,
       progressTextStyle: TextStyle(
           color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
       messageTextStyle: TextStyle(
@@ -66,12 +66,12 @@ class MyApp extends StatelessWidget {
                 print(percentage);
 
                 pr.update(
-                  progress: percentage,
+                  progress: percentage.toInt(),
                   message: "Please wait...",
                   progressWidget: Container(
                       padding: EdgeInsets.all(8.0),
                       child: CircularProgressIndicator()),
-                  maxProgress: 100.0,
+                  maxProgress: 100,
                   progressTextStyle: TextStyle(
                       color: Colors.black,
                       fontSize: 13.0,
@@ -85,11 +85,11 @@ class MyApp extends StatelessWidget {
                 Future.delayed(Duration(seconds: 2)).then((value) {
                   percentage = percentage + 30.0;
                   pr.update(
-                      progress: percentage, message: "Few more seconds...");
+                      progress: percentage.toInt(), message: "Few more seconds...");
                   print(percentage);
                   Future.delayed(Duration(seconds: 2)).then((value) {
                     percentage = percentage + 30.0;
-                    pr.update(progress: percentage, message: "Almost done...");
+                    pr.update(progress: percentage.toInt(), message: "Almost done...");
                     print(percentage);
 
                     Future.delayed(Duration(seconds: 2)).then((value) {

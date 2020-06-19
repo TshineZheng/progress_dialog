@@ -5,7 +5,7 @@ import 'package:flutter/painting.dart';
 enum ProgressDialogType { Normal, Download }
 
 String _dialogMessage = "Loading...";
-double _progress = 0.0, _maxProgress = 100.0;
+int _progress = 0, _maxProgress = 100;
 
 Widget _customBody;
 
@@ -34,6 +34,10 @@ Widget _progressWidget = Image.asset(
   package: 'progress_dialog',
 );
 
+typedef ProgressTextBuilder = String Function(int progress, int progressMax);
+
+ProgressTextBuilder _progressTextBuilder;
+
 class ProgressDialog {
   _Body _dialog;
 
@@ -42,19 +46,21 @@ class ProgressDialog {
         bool isDismissible,
         bool showLogs,
         TextDirection textDirection,
-        Widget customBody}) {
+        Widget customBody,
+        ProgressTextBuilder progressTextBuilder}) {
     _context = context;
     _progressDialogType = type ?? ProgressDialogType.Normal;
     _barrierDismissible = isDismissible ?? true;
     _showLogs = showLogs ?? false;
     _customBody = customBody ?? null;
     _direction = textDirection ?? TextDirection.ltr;
+    _progressTextBuilder = progressTextBuilder ?? (progress, progressMax) => "$_progress/$_maxProgress";
   }
 
   void style(
       {Widget child,
-      double progress,
-      double maxProgress,
+      int progress,
+      int maxProgress,
       String message,
       Widget progressWidget,
       Color backgroundColor,
@@ -88,8 +94,8 @@ class ProgressDialog {
   }
 
   void update(
-      {double progress,
-      double maxProgress,
+      {int progress,
+      int maxProgress,
       String message,
       Widget progressWidget,
       TextStyle progressTextStyle,
@@ -236,7 +242,7 @@ class _BodyState extends State<_Body> {
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
-                "$_progress/$_maxProgress",
+                _progressTextBuilder(_progress, _maxProgress),
                 style: _progressTextStyle,
                 textDirection: _direction,
               ),
